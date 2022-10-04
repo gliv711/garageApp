@@ -1,6 +1,8 @@
 package io.tutorial.spring.garageapp.Service;
 
 import io.tutorial.spring.garageapp.Model.Car;
+import io.tutorial.spring.garageapp.Repository.GarageRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,37 +11,33 @@ import java.util.List;
 
 @Service
 public class GarageService {
-ArrayList<Car> cars = new ArrayList<>(Arrays.asList(
-        new Car(1,"Clio","Renault",1998, Car.Color.GRAY),
-        new Car(2,"106","Peugeot",1988, Car.Color.WHITE),
-        new Car(3,"Megane","Renault",2004, Car.Color.GRAY)
+    @Autowired
+    private GarageRepository garageRepository ;
 
-));
 
 public List<Car> getCars(){
+    List<Car> cars = new ArrayList<>();
+    garageRepository.findAll().forEach(car -> {
+        cars.add(car);
+    });
     return cars;
 
 }
 public Car getCar(long id ){
-    return cars.stream().filter(car -> car.getId() == id).findFirst().orElse(null);
+    return garageRepository.findById(id).orElse(null)  ;
 }
 
 public void deleteCar(long id){
-    cars.removeIf(car -> car.getId()==id );
+    garageRepository.deleteById(id) ;
 
 }
 public void addCar(Car car){
-    cars.add(car);
+    garageRepository.save(car);
 }
 public void updateCar(Car car , long id ){
-    cars.forEach(car1 ->
-    {
-        if(car1.getId()== id ){
-            cars.set(cars.indexOf(car1),car );
-        }
-    });
-
+    garageRepository.save(car);
 }
+
 
 
 }

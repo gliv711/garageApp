@@ -1,5 +1,8 @@
 package io.tutorial.spring.garageapp.Model;
 
+import javax.persistence.*;
+
+@Entity
 public class Car {
     public enum Color{
         RED,
@@ -9,9 +12,12 @@ public class Car {
         GRAY,
         WHITE
     }
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id ;
     private String model ;
     private String brand ;
+    @Column(name ="release_year")
     private  int year ;
     private Color color;
 
